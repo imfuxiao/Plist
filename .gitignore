@@ -18,9 +18,11 @@ profile
 DerivedData
 *.hmap
 *.ipa
+.swiftpm
 
 # Bundler
 .bundle
+.build
 
 Carthage
 # We recommend against adding the Pods directory to your .gitignore. However
