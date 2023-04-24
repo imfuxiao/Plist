@@ -124,7 +124,10 @@ public extension Plist {
       self = .none
       return
     }
+    self.init(data: rawData)
+  }
 
+  init(data rawData: Data) {
     if let dict = try?
       PropertyListSerialization.propertyList(from: rawData, format: nil) as? NSDictionary
     {
@@ -142,7 +145,7 @@ public extension Plist {
     self = .none
   }
 
-  func write(path: URL) throws {
+  func toData() throws -> Data {
     var plist: Any
     switch self {
     case let .dictionary(dict):
@@ -152,8 +155,11 @@ public extension Plist {
     default:
       throw PlistError.invalidType
     }
-    let writeData = try PropertyListSerialization.data(fromPropertyList: plist, format: .xml, options: .zero)
-    try writeData.write(to: path)
+    return try PropertyListSerialization.data(fromPropertyList: plist, format: .xml, options: .zero)
+  }
+
+  func write(path: URL) throws {
+    try toData().write(to: path)
   }
 }
 
@@ -164,7 +170,7 @@ public extension Plist {
     }
     return self[member]
   }
-  
+
   subscript(key: String) -> Plist {
     switch self {
     case let .dictionary(dict):

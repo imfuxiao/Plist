@@ -75,4 +75,13 @@ final class PlistTests: XCTestCase {
     var num2: Int?
     XCTAssertEqual(num2, 234)
   }
+  
+  func testToData() throws {
+    let url = Bundle.module.url(forResource: "testDict", withExtension: "plist", subdirectory: "Resources")!
+    let plist = Plist(path: url)
+    let data = try plist.toData()
+    XCTAssertNotNil(data)
+    let newPlist = Plist(data: data)
+    XCTAssertEqual(newPlist.a.string, "+")
+  }
 }
